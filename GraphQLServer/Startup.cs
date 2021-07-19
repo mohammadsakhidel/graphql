@@ -50,10 +50,13 @@ namespace GraphQLServer
 
             app.UseAuthorization();
 
+            app.UseGraphQLGraphiQL();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
 }
