@@ -3,6 +3,7 @@ using GraphQLServer.DataAccess;
 using GraphQLServer.Models;
 using GraphQLServer.Schema.InputTypes;
 using HotChocolate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GraphQLServer.Schema
@@ -21,7 +22,9 @@ namespace GraphQLServer.Schema
             await db.Set<Author>().AddAsync(author);
             await db.SaveChangesAsync();
 
-            return author;
+            return await db.Authors
+                .Include(a => a.Books)
+                .SingleOrDefaultAsync(a => a.Id == author.Id);
         }
 
         public async Task<Book> CreateBookAsync(BookInput input)
@@ -37,7 +40,9 @@ namespace GraphQLServer.Schema
             await db.Set<Book>().AddAsync(book);
             await db.SaveChangesAsync();
 
-            return book;
+            return await db.Books
+                .Include(b => b.Author)
+                .SingleOrDefaultAsync(b => b.Id == book.Id);
         }
     }
 }

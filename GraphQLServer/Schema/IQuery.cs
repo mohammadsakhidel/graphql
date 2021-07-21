@@ -11,6 +11,6 @@ namespace GraphQLServer.Schema
     {
          Task<List<Author>> GetAuthorsAsync();
          Task<List<Book>> GetBooksAsync();
-         Task<Book?> GetBook(int id);
+         Task<Book> GetBook(int id);
     }
 }

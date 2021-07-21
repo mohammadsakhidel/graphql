@@ -29,14 +29,14 @@ namespace GraphQLServer.Schema
             });
         }
 
-        public async Task<Book?> GetBook(int id)
+        public async Task<Book> GetBook(int id)
         {
             var db = Program.Host.Services.GetRequiredService<MyDbContext>();
             return await Task.Run(() =>
             {
                 return db.Books
                     .Include(b => b.Author)
-                    .SingleOrDefault(b => b.ID == id);
+                    .SingleOrDefault(b => b.Id == id);
             });
         }
     }
