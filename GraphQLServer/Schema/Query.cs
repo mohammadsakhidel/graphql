@@ -14,7 +14,8 @@ namespace GraphQLServer.Schema
         public async Task<List<Author>> GetAuthorsAsync()
         {
             using var db = Program.Host.Services.GetRequiredService<MyDbContext>() as MyDbContext;
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 return db.Authors.Include(a => a.Books).ToList();
             });
         }
@@ -22,8 +23,20 @@ namespace GraphQLServer.Schema
         public async Task<List<Book>> GetBooksAsync()
         {
             using var db = Program.Host.Services.GetRequiredService<MyDbContext>() as MyDbContext;
-            return await Task.Run(() => {
+            return await Task.Run(() =>
+            {
                 return db.Books.Include(b => b.Author).ToList();
+            });
+        }
+
+        public async Task<Book?> GetBook(int id)
+        {
+            var db = Program.Host.Services.GetRequiredService<MyDbContext>();
+            return await Task.Run(() =>
+            {
+                return db.Books
+                    .Include(b => b.Author)
+                    .SingleOrDefault(b => b.ID == id);
             });
         }
     }
