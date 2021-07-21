@@ -11,27 +11,24 @@ namespace GraphQLServer.Schema
 {
     public class Query : IQuery
     {
-        public async Task<List<Author>> GetAuthorsAsync()
+        public async Task<List<Author>> GetAuthorsAsync([Service] MyDbContext db)
         {
-            using var db = Program.Host.Services.GetRequiredService<MyDbContext>() as MyDbContext;
             return await Task.Run(() =>
             {
                 return db.Authors.Include(a => a.Books).ToList();
             });
         }
 
-        public async Task<List<Book>> GetBooksAsync()
+        public async Task<List<Book>> GetBooksAsync([Service] MyDbContext db)
         {
-            using var db = Program.Host.Services.GetRequiredService<MyDbContext>() as MyDbContext;
             return await Task.Run(() =>
             {
                 return db.Books.Include(b => b.Author).ToList();
             });
         }
 
-        public async Task<Book> GetBook(int id)
+        public async Task<Book> GetBook(int id, [Service] MyDbContext db)
         {
-            var db = Program.Host.Services.GetRequiredService<MyDbContext>();
             return await Task.Run(() =>
             {
                 return db.Books

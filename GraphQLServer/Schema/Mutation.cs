@@ -10,10 +10,8 @@ namespace GraphQLServer.Schema
 {
     public class Mutation : IMutation
     {
-        public async Task<Author> CreateAuthorAsync(AuthorInput input)
+        public async Task<Author> CreateAuthorAsync(AuthorInput input, [Service] MyDbContext db)
         {
-            var db = Program.Host.Services.GetRequiredService<MyDbContext>();
-
             var author = new Author
             {
                 Name = input.Name
@@ -27,10 +25,8 @@ namespace GraphQLServer.Schema
                 .SingleOrDefaultAsync(a => a.Id == author.Id);
         }
 
-        public async Task<Book> CreateBookAsync(BookInput input)
+        public async Task<Book> CreateBookAsync(BookInput input, [Service] MyDbContext db)
         {
-            var db = Program.Host.Services.GetRequiredService<MyDbContext>();
-
             var book = new Book
             {
                 Title = input.Title,
